@@ -1,10 +1,992 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111111">
+<title>Royal Ink Tattoo Studio | Tattoo Bookings</title>
+
+<style>
+:root{
+--bg:#0c0c0d;
+--panel:#171719;
+--gold:#d7a94b;
+--muted:#aaa;
+--line:#303034;
+--white:#f7f4ee
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+background:var(--bg);
+color:var(--white);
+font-family:Arial,sans-serif;
+line-height:1.5
+}
+
+header{
+position:sticky;
+top:0;
+z-index:5;
+background:#0c0c0dee;
+border-bottom:1px solid var(--line)
+}
+
+.nav{
+max-width:1100px;
+margin:auto;
+padding:15px 20px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px
+}
+
+.logo{
+font-weight:900;
+letter-spacing:2px;
+font-size:19px
+}
+
+.logo span{color:var(--gold)}
+
+nav a{
+color:#ddd;
+text-decoration:none;
+margin-left:18px;
+font-size:14px
+}
+
+.hero{
+min-height:410px;
+display:flex;
+align-items:center;
+background:
+linear-gradient(90deg,#080808f2,#080808a8),
+url('https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?auto=format&fit=crop&w=1800&q=85')
+center/cover
+}
+
+.hero-inner{
+max-width:1100px;
+width:100%;
+margin:auto;
+padding:65px 22px
+}
+
+.eyebrow{
+color:var(--gold);
+font-weight:bold;
+letter-spacing:3px;
+font-size:12px
+}
+
+h1{
+font-size:clamp(38px,7vw,68px);
+line-height:1.02;
+max-width:700px;
+margin:14px 0
+}
+
+.hero p{
+max-width:540px;
+color:#ddd
+}
+
+.btn{
+display:inline-block;
+border:0;
+border-radius:5px;
+padding:13px 19px;
+background:var(--gold);
+color:#17120a;
+font-weight:800;
+text-decoration:none;
+cursor:pointer
+}
+
+section{
+max-width:1100px;
+margin:auto;
+padding:55px 20px
+}
+
+.section-head{margin-bottom:25px}
+
+.section-head h2{
+font-size:30px;
+margin:0 0 6px
+}
+
+.section-head p,.muted{color:var(--muted)}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:14px
+}
+
+.price-card,.panel{
+background:var(--panel);
+border:1px solid var(--line);
+border-radius:10px;
+padding:19px
+}
+
+.price-card{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px
+}
+
+.price-card strong{
+color:var(--gold);
+white-space:nowrap
+}
+
+.booking-layout{
+display:grid;
+grid-template-columns:1.15fr .85fr;
+gap:20px;
+align-items:start
+}
+
+label{
+display:block;
+font-size:13px;
+font-weight:bold;
+margin:13px 0 6px;
+color:#e8e4dc
+}
+
+input,select,textarea{
+width:100%;
+padding:12px;
+border-radius:6px;
+border:1px solid #45454a;
+background:#101012;
+color:white;
+font:inherit
+}
+
+input[type=file]{padding:9px}
+
+textarea{
+min-height:90px;
+resize:vertical
+}
+
+.row{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px
+}
+
+.slot-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:8px;
+margin-top:10px
+}
+
+.slot{
+padding:10px 5px;
+border:1px solid #555;
+border-radius:6px;
+background:#101012;
+color:white;
+cursor:pointer
+}
+
+.slot.selected{
+background:var(--gold);
+color:#111;
+border-color:var(--gold);
+font-weight:bold
+}
+
+.slot:disabled{
+opacity:.3;
+cursor:not-allowed;
+text-decoration:line-through
+}
+
+.counter{
+padding:14px;
+border-radius:8px;
+background:#242018;
+border:1px solid #594726;
+margin:12px 0;
+color:#f5d58e
+}
+
+.summary{
+position:sticky;
+top:85px
+}
+
+.summary-line{
+display:flex;
+justify-content:space-between;
+gap:12px;
+padding:9px 0;
+border-bottom:1px solid var(--line)
+}
+
+.total{
+font-size:25px;
+color:var(--gold);
+font-weight:900
+}
+
+.note{
+font-size:12px;
+color:#aaa
+}
+
+.full{
+width:100%;
+margin-top:15px
+}
+
+.status{
+margin-top:12px;
+padding:12px;
+border-radius:7px;
+display:none;
+background:#1d3326;
+color:#b8f0c8
+}
+
+footer{
+border-top:1px solid var(--line);
+padding:28px 20px;
+text-align:center;
+color:#999
+}
+
+@media(max-width:760px){
+nav{display:none}
+.booking-layout{grid-template-columns:1fr}
+.summary{position:static}
+.hero{min-height:360px}
+.row{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="nav">
+<div class="logo">ROYAL <span>INK</span> TATTOO STUDIO</div>
+<nav>
+<a href="#prices">Prices</a>
+<a href="#book">Book now</a>
+<a href="#contact">Contact</a>
+</nav>
+</div>
+</header>
+
+<div class="hero">
+<div class="hero-inner">
+<div class="eyebrow">CUSTOM TATTOOS • PROFESSIONAL ARTISTRY</div>
+
+<h1>
+Your idea.<br>
+<span style="color:var(--gold)">Our ink.</span> Your story.
+</h1>
+
+<p>Choose a tattoo service, share your design inspiration and reserve an appointment online.</p>
+
+<a class="btn" href="#book">BOOK YOUR SESSION</a>
+</div>
+</div>
+
+<section id="prices">
+<div class="section-head">
+<div class="eyebrow">SERVICE MENU</div>
+<h2>Tattoo price list</h2>
+<p>Prices are in US dollars. Final quotations may depend on design detail and session time.</p>
+</div>
+
+<h3>Fixed tattoo prices</h3>
+<div class="grid" id="priceList"></div>
+
+<h3 style="margin-top:30px">Hourly tattoo sessions</h3>
+<div class="grid" id="hourlyPriceList"></div>
+</section>
+
+<section id="book">
+
+<div class="section-head">
+<div class="eyebrow">RESERVE YOUR APPOINTMENT</div>
+<h2>Book a tattoo session</h2>
+<p>Tell us what you have in mind. Select a date and an available time slot.</p>
+</div>
+
+<div class="booking-layout">
+
+<form class="panel" id="bookingForm">
+
 <div class="row">
 <div>
-<label for="county">County *</label>
-<input id="county" placeholder="e.g. Kisumu">
+<label for="name">Full name *</label>
+<input id="name" required placeholder="Your full name">
 </div>
+
 <div>
+<label for="phone">Phone / WhatsApp *</label>
+<input id="phone" required type="tel" placeholder="+254...">
+</div>
+</div>
+
+<label for="email">Email address</label>
+<input id="email" type="email" placeholder="you@example.com">
+
+<label for="pricingType">Choose pricing option *</label>
+
+<select id="pricingType" required>
+<option value="fixed">Fixed tattoo design / body placement</option>
+<option value="hourly">Hourly tattoo session</option>
+</select>
+
+<div id="fixedFields">
+<label for="service">Choose tattoo service *</label>
+<select id="service" required>
+<option value="">Select a service</option>
+</select>
+</div>
+
+<div id="hourlyFields" style="display:none">
+
+<label for="duration">How long would you like the session? *</label>
+
+<select id="duration">
+<option value="">Choose session duration</option>
+<option value="150">Short session — up to 1 hour ($150)</option>
+<option value="200">1.5–2 hours ($200)</option>
+<option value="400">3–4 hours ($400)</option>
+<option value="600">5–6 hours ($600)</option>
+<option value="800">7–8 hours ($800)</option>
+</select>
+
+</div>
+
+<div class="row">
+<div>
+<label for="date">Appointment date *</label>
+<input id="date" type="date" required>
+</div>
+
+<div>
+<label for="placement">Body placement</label>
+<input id="placement" placeholder="e.g. left arm">
+</div>
+</div>
+
+<label for="appointmentType">Where would you like the tattoo service? *</label>
+
+<select id="appointmentType" required>
+<option value="Studio appointment">At the studio</option>
+<option value="Home service">Home service (artist travels to you)</option>
+</select>
+
+<div id="homeLocationFields" style="display:none">
+
 <label for="town">Town / Estate *</label>
-<input id="town" placeholder="e.g. Milimani">
+<input id="town" placeholder="Enter your town or estate">
+
+<label for="address">Home / venue address and nearby landmark *</label>
+<input id="address" placeholder="Building, street, estate and nearby landmark">
+
+<label for="directions">Extra directions (optional)</label>
+<textarea id="directions" placeholder="Gate instructions, directions or other details"></textarea>
+
+<div class="note">
+Home-service travel availability and any travel fee will be confirmed by the studio before your appointment is approved.
+</div>
+
+</div>
+
+<div class="counter" id="slotCounter">
+Choose a date to see available slots.
+</div>
+
+<label>Available appointment times *</label>
+
+<div class="slot-grid" id="slotGrid"></div>
+
+<input type="hidden" id="selectedSlot" required>
+
+<label for="design">Upload your tattoo design / reference image</label>
+<input id="design" type="file" accept="image/*">
+
+<div id="imagePreview" class="note"></div>
+
+<label for="notes">Describe your idea / custom design</label>
+<textarea id="notes" placeholder="Describe the design, size, colours, text or changes you would like..."></textarea>
+
+<label>Payment method</label>
+
+<div class="panel" style="padding:12px">
+<strong>Card payment</strong>
+<div class="note">
+Visa and Mastercard checkout will be enabled after the payment provider is connected.
 </div>
 </div>
+
+<button class="btn full" type="submit">
+SUBMIT BOOKING REQUEST
+</button>
+
+<div class="note">
+Submitting this form creates a booking request only. Your appointment is not confirmed until the studio confirms availability and card payment is completed.
+</div>
+
+<div class="status" id="status"></div>
+
+</form>
+
+<aside class="panel summary">
+
+<div class="eyebrow">BOOKING SUMMARY</div>
+<h2 style="margin-top:5px">Your session</h2>
+
+<div class="summary-line">
+<span>Service</span>
+<strong id="sumService">Not selected</strong>
+</div>
+
+<div class="summary-line">
+<span>Price</span>
+<strong id="sumPrice">$0</strong>
+</div>
+
+<div class="summary-line">
+<span>Date</span>
+<strong id="sumDate">Not selected</strong>
+</div>
+
+<div class="summary-line">
+<span>Time</span>
+<strong id="sumTime">Not selected</strong>
+</div>
+
+<p class="note">
+Displayed prices are starting prices from the supplied list. The artist may confirm a final quote after reviewing your reference image and design details.
+</p>
+
+<div class="total" id="sumTotal">$0</div>
+
+</aside>
+
+</div>
+</section>
+
+<section id="contact">
+
+<div class="section-head">
+<div class="eyebrow">GET IN TOUCH</div>
+<h2>Royal Ink Tattoo Studio</h2>
+<p>For questions about designs, pricing or appointments, contact the studio directly.</p>
+</div>
+
+<p>Phone / WhatsApp: <strong>+1 623-301-5587</strong></p>
+
+<a class="btn" href="https://wa.me/16233015587" target="_blank" rel="noopener">
+CHAT WITH US ON WHATSAPP
+</a>
+
+</section>
+
+<a href="https://wa.me/16233015587"
+target="_blank"
+rel="noopener"
+style="position:fixed;right:18px;bottom:18px;z-index:10;background:#25D366;color:#071b0e;text-decoration:none;font-weight:800;padding:13px 17px;border-radius:30px;box-shadow:0 4px 18px #0008">
+WhatsApp us
+</a>
+
+<section id="admin" style="border-top:1px solid var(--line)">
+
+<div class="section-head">
+<div class="eyebrow">STUDIO MANAGEMENT PREVIEW</div>
+<h2>Booking requests</h2>
+
+<p>
+This is a local preview only. It is not password-protected and only shows bookings saved in this browser. Do not use it for real client data until a secure server and administrator login are connected.
+</p>
+</div>
+
+<div class="panel">
+
+<div class="row">
+<div>
+<strong id="adminCount">0 booking requests</strong>
+</div>
+
+<div style="text-align:right">
+<button class="btn" type="button" id="refreshAdmin">
+Refresh list
+</button>
+</div>
+</div>
+
+<div id="adminBookings" class="grid" style="margin-top:16px"></div>
+
+</div>
+</section>
+
+<footer>
+© <span id="year"></span> Royal Ink Tattoo Studio. All rights reserved.
+</footer>
+
+<script>
+
+const SERVICES=[
+["Name tattoo",150],
+["Quarter sleeve",125],
+["Half sleeve",400],
+["Full sleeve",600],
+["Calf piece",750],
+["Half leg sleeve",900],
+["Full leg sleeve",1200],
+["Stomach piece",1500],
+["Half chest piece",2000],
+["Full chest piece",2500],
+["Neck piece",1500],
+["Spine piece",1750],
+["Thigh piece",2000]
+];
+
+const HOURLY=[
+["Short session — up to 1 hour",150],
+["1.5–2 hours",200],
+["3–4 hours",400],
+["5–6 hours",600],
+["7–8 hours",800]
+];
+
+const TIMES=[
+"09:00 AM",
+"10:30 AM",
+"12:00 PM",
+"01:30 PM",
+"03:00 PM",
+"04:30 PM"
+];
+
+const DAILY_CAPACITY=6;
+
+const $=id=>document.getElementById(id);
+const money=n=>"$"+Number(n).toLocaleString("en-US");
+
+let chosenTime="";
+
+function saved(){
+try{
+return JSON.parse(localStorage.getItem("royalInkTattooBookings")||"{}");
+}catch(e){
+return {};
+}
+}
+
+function bookedFor(date){
+return saved()[date]||[];
+}
+
+function renderServices(){
+
+$("priceList").innerHTML=SERVICES.map(s=>
+`<div class="price-card"><span>${s[0]}</span><strong>${money(s[1])}</strong></div>`
+).join("");
+
+$("hourlyPriceList").innerHTML=HOURLY.map(s=>
+`<div class="price-card"><span>${s[0]}</span><strong>${money(s[1])}</strong></div>`
+).join("");
+
+$("service").innerHTML=
+'<option value="">Select a service</option>'+
+SERVICES.map((s,i)=>
+`<option value="${i}">${s[0]} — ${money(s[1])}</option>`
+).join("");
+
+}
+
+function renderSlots(){
+
+const date=$("date").value;
+
+chosenTime="";
+$("selectedSlot").value="";
+$("slotGrid").innerHTML="";
+
+if(!date){
+$("slotCounter").textContent="Choose a date to see available slots.";
+updateSummary();
+return;
+}
+
+const used=bookedFor(date);
+
+const remaining=Math.max(0,DAILY_CAPACITY-used.length);
+
+$("slotCounter").textContent=
+`${remaining} of ${DAILY_CAPACITY} appointment slots available for ${date}.`;
+
+TIMES.forEach(t=>{
+
+const b=document.createElement("button");
+
+b.type="button";
+b.className="slot";
+b.textContent=t;
+b.disabled=used.includes(t);
+
+b.addEventListener("click",()=>{
+
+document.querySelectorAll(".slot").forEach(x=>
+x.classList.remove("selected")
+);
+
+b.classList.add("selected");
+
+chosenTime=t;
+$("selectedSlot").value=t;
+
+updateSummary();
+
+});
+
+$("slotGrid").appendChild(b);
+
+});
+
+updateSummary();
+
+}
+
+function selectedPricing(){
+
+if($("pricingType").value==="hourly"){
+
+const amount=$("duration").value;
+
+const item=HOURLY.find(x=>String(x[1])===amount);
+
+return item?
+{name:item[0]+" (hourly session)",price:item[1]}:
+null;
+
+}
+
+const i=$("service").value;
+
+const item=i===""?null:SERVICES[Number(i)];
+
+return item?
+{name:item[0],price:item[1]}:
+null;
+
+}
+
+function updateSummary(){
+
+const s=selectedPricing();
+
+$("sumService").textContent=s?s.name:"Not selected";
+
+$("sumPrice").textContent=s?money(s.price):"$0";
+
+$("sumTotal").textContent=s?money(s.price):"$0";
+
+$("sumDate").textContent=$("date").value||"Not selected";
+
+$("sumTime").textContent=chosenTime||"Not selected";
+
+}
+
+$("pricingType").addEventListener("change",()=>{
+
+const hourly=$("pricingType").value==="hourly";
+
+$("fixedFields").style.display=hourly?"none":"block";
+
+$("hourlyFields").style.display=hourly?"block":"none";
+
+$("service").required=!hourly;
+
+$("duration").required=hourly;
+
+updateSummary();
+
+});
+
+$("service").addEventListener("change",updateSummary);
+
+$("duration").addEventListener("change",updateSummary);
+
+$("date").addEventListener("change",renderSlots);
+
+$("appointmentType").addEventListener("change",()=>{
+
+const home=$("appointmentType").value==="Home service";
+
+$("homeLocationFields").style.display=home?"block":"none";
+
+["town","address"].forEach(id=>
+$(id).required=home
+);
+
+});
+
+$("design").addEventListener("change",()=>{
+
+const f=$("design").files[0];
+
+$("imagePreview").textContent=f?
+`Selected: ${f.name} (image will need to be uploaded to the booking system when backend storage is connected)`:
+"";
+
+});
+
+$("bookingForm").addEventListener("submit",e=>{
+
+e.preventDefault();
+
+if(!chosenTime){
+alert("Please select an available appointment time.");
+return;
+}
+
+const date=$("date").value;
+
+const current=bookedFor(date);
+
+if(current.includes(chosenTime)||current.length>=DAILY_CAPACITY){
+
+alert("That slot is no longer available. Please choose another date or time.");
+
+renderSlots();
+
+return;
+
+}
+
+const selected=selectedPricing();
+
+if(!selected){
+
+alert("Please select a tattoo service or hourly session duration.");
+
+return;
+
+}
+
+const home=$("appointmentType").value==="Home service";
+
+if(home&&(!$("town").value.trim()||!$("address").value.trim())){
+
+alert("Please enter your town and home or venue address.");
+
+return;
+
+}
+
+const booking={
+
+reference:"RI"+Date.now().toString().slice(-8),
+
+name:$("name").value,
+
+phone:$("phone").value,
+
+email:$("email").value,
+
+pricingType:$("pricingType").value,
+
+service:selected.name,
+
+price:selected.price,
+
+date:date,
+
+time:chosenTime,
+
+placement:$("placement").value,
+
+appointmentType:$("appointmentType").value,
+
+town:home?$("town").value:"",
+
+address:home?$("address").value:"",
+
+directions:home?$("directions").value:"",
+
+notes:$("notes").value,
+
+createdAt:new Date().toISOString(),
+
+status:"REQUEST ONLY — PAYMENT NOT TAKEN"
+
+};
+
+const all=saved();
+
+all[date]=[...(all[date]||[]),chosenTime];
+
+localStorage.setItem(
+"royalInkTattooBookings",
+JSON.stringify(all)
+);
+
+const requests=JSON.parse(
+localStorage.getItem("royalInkTattooRequests")||"[]"
+);
+
+requests.push(booking);
+
+localStorage.setItem(
+"royalInkTattooRequests",
+JSON.stringify(requests)
+);
+
+renderAdmin();
+
+const status=$("status");
+
+status.style.display="block";
+
+status.textContent=
+`Request ${booking.reference} saved on this device. This demo has not charged your card or sent the request to the studio. A live shared booking system and secure card checkout must be connected before accepting real client bookings.`;
+
+$("bookingForm").reset();
+
+$("imagePreview").textContent="";
+
+renderSlots();
+
+updateSummary();
+
+});
+
+$("date").min=new Date().toISOString().split("T")[0];
+
+$("year").textContent=new Date().getFullYear();
+
+function renderAdmin(){
+
+const requests=JSON.parse(
+localStorage.getItem("royalInkTattooRequests")||"[]"
+);
+
+$("adminCount").textContent=
+`${requests.length} booking request${requests.length===1?"":"s"}`;
+
+$("adminBookings").innerHTML=requests.length?
+
+requests.slice().reverse().map(b=>`
+
+<div class="price-card" style="display:block">
+
+<div style="display:flex;justify-content:space-between;gap:8px">
+
+<strong>${b.reference}</strong>
+
+<strong>${money(b.price)}</strong>
+
+</div>
+
+<p>
+
+<b>${b.name}</b> · ${b.phone}<br>
+
+${b.service}<br>
+
+${b.date} at ${b.time}<br>
+
+${b.appointmentType}
+
+${b.appointmentType==="Home service"?
+`<br>${b.town}<br>${b.address}`:""}
+
+<br>
+
+<span class="note">
+${b.notes||"No extra design notes"}
+</span>
+
+</p>
+
+<label for="status-${b.reference}">
+Booking status
+</label>
+
+<select id="status-${b.reference}"
+data-ref="${b.reference}"
+class="admin-status">
+
+${[
+"REQUEST ONLY — PAYMENT NOT TAKEN",
+"Approved — awaiting card payment",
+"Confirmed — payment verified",
+"Rejected"
+].map(st=>
+`<option ${b.status===st?"selected":""}>${st}</option>`
+).join("")}
+
+</select>
+
+</div>
+
+`).join("")
+
+:
+
+'<p class="muted">No booking requests saved in this browser yet.</p>';
+
+document.querySelectorAll(".admin-status").forEach(sel=>
+
+sel.addEventListener("change",()=>{
+
+const list=JSON.parse(
+localStorage.getItem("royalInkTattooRequests")||"[]"
+);
+
+const item=list.find(
+x=>x.reference===sel.dataset.ref
+);
+
+if(item){
+
+item.status=sel.value;
+
+localStorage.setItem(
+"royalInkTattooRequests",
+JSON.stringify(list)
+);
+
+}
+
+})
+
+);
+
+}
+
+$("refreshAdmin").addEventListener("click",renderAdmin);
+
+renderServices();
+
+updateSummary();
+
+renderAdmin();
+
+</script>
+
+</body>
+</html>
