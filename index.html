@@ -1,10 +1,596 @@
-<div id="homeLocationFields" style="display:none">
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0c0c0d">
+<title>Royal Ink Tattoo Studio</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+--bg:#0c0c0d;
+--panel:#171719;
+--gold:#d7a94b;
+--muted:#aaa;
+--line:#303034;
+--white:#f7f4ee;
+}
+*{box-sizing:border-box}
+body{
+margin:0;background:var(--bg);color:var(--white);
+font-family:Arial,sans-serif;line-height:1.5
+}
+header{
+position:sticky;top:0;z-index:5;
+background:#0c0c0dee;border-bottom:1px solid var(--line)
+}
+.nav{
+max-width:1100px;margin:auto;padding:16px 20px;
+display:flex;justify-content:space-between;align-items:center
+}
+.logo{font-size:19px;font-weight:900;letter-spacing:2px}
+.logo span{color:var(--gold)}
+nav a{color:#ddd;text-decoration:none;margin-left:18px}
+.hero{
+min-height:430px;display:flex;align-items:center;
+background:linear-gradient(90deg,#080808f2,#080808a8),
+url('https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?auto=format&fit=crop&w=1800&q=85') center/cover
+}
+.hero-inner{max-width:1100px;width:100%;margin:auto;padding:65px 22px}
+.eyebrow{color:var(--gold);font-weight:bold;letter-spacing:3px;font-size:12px}
+h1{font-size:clamp(38px,7vw,68px);line-height:1.05;max-width:700px}
+.hero p{max-width:550px;color:#ddd}
+.btn{
+display:inline-block;border:0;border-radius:6px;
+padding:13px 20px;background:var(--gold);
+color:#17120a;font-weight:800;text-decoration:none;cursor:pointer
+}
+section{max-width:1100px;margin:auto;padding:55px 20px}
+.section-head{margin-bottom:25px}
+.section-head h2{font-size:30px;margin:0 0 6px}
+.section-head p,.muted{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.price-card,.panel{
+background:var(--panel);border:1px solid var(--line);
+border-radius:10px;padding:19px
+}
+.price-card{display:flex;justify-content:space-between;gap:10px}
+.price-card strong{color:var(--gold)}
+.booking-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:start}
+label{display:block;font-size:13px;font-weight:bold;margin:13px 0 6px}
+input,select,textarea{
+width:100%;padding:12px;border-radius:6px;
+border:1px solid #45454a;background:#101012;color:white;
+font:inherit
+}
+textarea{min-height:90px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.slot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.slot{
+padding:10px 5px;border:1px solid #555;border-radius:6px;
+background:#101012;color:white;cursor:pointer
+}
+.slot.selected{background:var(--gold);color:#111;font-weight:bold}
+.summary{position:sticky;top:85px}
+.summary-line{
+display:flex;justify-content:space-between;gap:12px;
+padding:9px 0;border-bottom:1px solid var(--line)
+}
+.total{font-size:25px;color:var(--gold);font-weight:900}
+.note{font-size:12px;color:#aaa}
+.full{width:100%;margin-top:15px}
+.status{
+margin-top:12px;padding:12px;border-radius:7px;
+display:none;background:#1d3326;color:#b8f0c8
+}
+.error{background:#442020;color:#ffd0d0}
+footer{border-top:1px solid var(--line);padding:28px;text-align:center;color:#999}
+.admin-booking{display:block;margin-bottom:12px}
+.hidden{display:none!important}
+@media(max-width:760px){
+nav{display:none}
+.booking-layout{grid-template-columns:1fr}
+.summary{position:static}
+.hero{min-height:360px}
+.row{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="nav">
+<div class="logo">ROYAL <span>INK</span> TATTOO STUDIO</div>
+<nav>
+<a href="#prices">Prices</a>
+<a href="#book">Book now</a>
+<a href="#contact">Contact</a>
+</nav>
+</div>
+</header>
+
+<div class="hero">
+<div class="hero-inner">
+<div class="eyebrow">CUSTOM TATTOOS • PROFESSIONAL ARTISTRY</div>
+<h1>Your idea.<br><span style="color:var(--gold)">Our ink.</span> Your story.</h1>
+<p>Choose a tattoo service, share your design inspiration and reserve an appointment online.</p>
+<a class="btn" href="#book">BOOK YOUR SESSION</a>
+</div>
+</div>
+
+<section id="prices">
+<div class="section-head">
+<div class="eyebrow">SERVICE MENU</div>
+<h2>Tattoo price list</h2>
+<p>Prices are in US dollars. Final quotations may depend on design detail and session time.</p>
+</div>
+<h3>Fixed tattoo prices</h3>
+<div class="grid" id="priceList"></div>
+<h3 style="margin-top:30px">Hourly tattoo sessions</h3>
+<div class="grid" id="hourlyPriceList"></div>
+</section>
+
+<section id="book">
+<div class="section-head">
+<div class="eyebrow">RESERVE YOUR APPOINTMENT</div>
+<h2>Book a tattoo session</h2>
+<p>Complete the form to send your booking request to Royal Ink.</p>
+</div>
+
+<div class="booking-layout">
+
+<form class="panel" id="bookingForm">
+
+<div class="row">
+<div>
+<label for="name">Full name *</label>
+<input id="name" required placeholder="Your full name">
+</div>
+<div>
+<label for="phone">Phone / WhatsApp *</label>
+<input id="phone" required type="tel" placeholder="+1...">
+</div>
+</div>
+
+<label for="email">Email address</label>
+<input id="email" type="email" placeholder="you@example.com">
+
+<label for="pricingType">Choose pricing option *</label>
+<select id="pricingType" required>
+<option value="fixed">Fixed tattoo design / body placement</option>
+<option value="hourly">Hourly tattoo session</option>
+</select>
+
+<div id="fixedFields">
+<label for="service">Choose tattoo service *</label>
+<select id="service" required>
+<option value="">Select a service</option>
+</select>
+</div>
+
+<div id="hourlyFields" class="hidden">
+<label for="duration">Session duration *</label>
+<select id="duration">
+<option value="">Choose duration</option>
+<option value="150">Up to 1 hour ($150)</option>
+<option value="200">1.5–2 hours ($200)</option>
+<option value="400">3–4 hours ($400)</option>
+<option value="600">5–6 hours ($600)</option>
+<option value="800">7–8 hours ($800)</option>
+</select>
+</div>
+
+<div class="row">
+<div>
+<label for="date">Appointment date *</label>
+<input id="date" type="date" required>
+</div>
+<div>
+<label for="placement">Body placement</label>
+<input id="placement" placeholder="e.g. left arm">
+</div>
+</div>
+
+<label for="appointmentType">Where would you like the service? *</label>
+<select id="appointmentType" required>
+<option value="Studio appointment">At the studio</option>
+<option value="Home service">Home service</option>
+</select>
+
+<div id="homeLocationFields" class="hidden">
 <label for="address">Home service location address *</label>
-<textarea id="address" placeholder="Enter your full location address, estate, building or nearby landmark" ></textarea>
-
+<textarea id="address" placeholder="Enter your full location address, estate, building or nearby landmark"></textarea>
 <div class="note">
 Home-service availability and any travel fee will be confirmed by the studio.
 </div>
+</div>
+
+<div class="note" id="slotCounter">Choose a date to see appointment times.</div>
+<label>Available appointment times *</label>
+<div class="slot-grid" id="slotGrid"></div>
+<input type="hidden" id="selectedSlot">
+
+<label for="design">Upload tattoo design / reference image</label>
+<input id="design" type="file" accept="image/*">
+<div id="imagePreview" class="note"></div>
+
+<label for="notes">Describe your tattoo idea</label>
+<textarea id="notes" placeholder="Describe the design, size, colours, text or changes you want..."></textarea>
+
+<div class="panel" style="padding:12px;margin-top:15px">
+<strong>Payment</strong>
+<div class="note">Payment instructions will be provided after your booking request is reviewed. No payment is taken by this form.</div>
+</div>
+
+<button class="btn full" id="submitBtn" type="submit">SUBMIT BOOKING REQUEST</button>
+
+<div class="note">Your appointment is not confirmed until the studio approves your request.</div>
+<div class="status" id="status"></div>
+</form>
+
+<aside class="panel summary">
+<div class="eyebrow">BOOKING SUMMARY</div>
+<h2>Your session</h2>
+<div class="summary-line"><span>Service</span><strong id="sumService">Not selected</strong></div>
+<div class="summary-line"><span>Price</span><strong id="sumPrice">$0</strong></div>
+<div class="summary-line"><span>Date</span><strong id="sumDate">Not selected</strong></div>
+<div class="summary-line"><span>Time</span><strong id="sumTime">Not selected</strong></div>
+<p class="note">Final quotations may change after the artist reviews your design.</p>
+<div class="total" id="sumTotal">$0</div>
+</aside>
 
 </div>
+</section>
+
+<section id="contact">
+<div class="section-head">
+<div class="eyebrow">GET IN TOUCH</div>
+<h2>Royal Ink Tattoo Studio</h2>
+<p>For questions about designs, prices or appointments, contact us directly.</p>
+</div>
+<p>Phone / WhatsApp: <strong>+1 623-301-5587</strong></p>
+<a class="btn" href="https://wa.me/16233015587" target="_blank" rel="noopener">CHAT WITH US ON WHATSAPP</a>
+</section>
+
+<a href="https://wa.me/16233015587" target="_blank" rel="noopener"
+style="position:fixed;right:18px;bottom:18px;z-index:10;background:#25D366;color:#071b0e;text-decoration:none;font-weight:800;padding:13px 17px;border-radius:30px">
+WhatsApp us
+</a>
+
+<section id="admin" style="border-top:1px solid var(--line)">
+<div class="section-head">
+<div class="eyebrow">PRIVATE STUDIO MANAGEMENT</div>
+<h2>Administrator login</h2>
+<p>Only the authorized studio administrator can view booking records.</p>
+</div>
+
+<div class="panel">
+<div id="loginArea">
+<label for="adminEmail">Administrator email</label>
+<input id="adminEmail" type="email" placeholder="Your admin email">
+<label for="adminPassword">Password</label>
+<input id="adminPassword" type="password" placeholder="Your admin password">
+<button class="btn full" id="loginBtn" type="button">ADMIN LOGIN</button>
+</div>
+
+<div id="adminArea" class="hidden">
+<div class="row">
+<strong id="adminCount">Booking requests</strong>
+<button class="btn" id="logoutBtn" type="button">LOG OUT</button>
+</div>
+<div id="adminBookings" style="margin-top:18px"></div>
+</div>
+
+<div class="status" id="adminStatus"></div>
+</div>
+</section>
+
+<footer>© <span id="year"></span> Royal Ink Tattoo Studio. All rights reserved.</footer>
+
+<script>
+const SUPABASE_URL="https://wnpyghzadyqtomjggfgj.supabase.co";
+const SUPABASE_KEY="sb_publishable_TLfaseXPiMq-9pqOEe9EBw_s2XB7LDS";
+
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const SERVICES=[
+["Name tattoo",150],
+["Quarter sleeve",125],
+["Half sleeve",400],
+["Full sleeve",600],
+["Calf piece",750],
+["Half leg sleeve",900],
+["Full leg sleeve",1200],
+["Stomach piece",1500],
+["Half chest piece",2000],
+["Full chest piece",2500],
+["Neck piece",1500],
+["Spine piece",1750],
+["Thigh piece",2000]
+];
+
+const HOURLY=[
+["Short session — up to 1 hour",150],
+["1.5–2 hours",200],
+["3–4 hours",400],
+["5–6 hours",600],
+["7–8 hours",800]
+];
+
+const TIMES=["09:00 AM","10:30 AM","12:00 PM","01:30 PM","03:00 PM","04:30 PM"];
+const $=id=>document.getElementById(id);
+const money=n=>"$"+Number(n).toLocaleString("en-US");
+
+let chosenTime="";
+
+function showStatus(id,message,error=false){
+const el=$(id);
+el.style.display="block";
+el.textContent=message;
+el.classList.toggle("error",error);
+}
+
+function renderServices(){
+$("priceList").innerHTML=SERVICES.map(s=>
+`<div class="price-card"><span>${s[0]}</span><strong>${money(s[1])}</strong></div>`
+).join("");
+
+$("hourlyPriceList").innerHTML=HOURLY.map(s=>
+`<div class="price-card"><span>${s[0]}</span><strong>${money(s[1])}</strong></div>`
+).join("");
+
+$("service").innerHTML='<option value="">Select a service</option>'+
+SERVICES.map((s,i)=>`<option value="${i}">${s[0]} — ${money(s[1])}</option>`).join("");
+}
+
+function selectedPricing(){
+if($("pricingType").value==="hourly"){
+const item=HOURLY.find(x=>String(x[1])===$("duration").value);
+return item?{name:item[0],price:item[1]}:null;
+}
+const item=SERVICES[Number($("service").value)];
+return $("service").value!==""&&item?{name:item[0],price:item[1]}:null;
+}
+
+function updateSummary(){
+const s=selectedPricing();
+$("sumService").textContent=s?s.name:"Not selected";
+$("sumPrice").textContent=s?money(s.price):"$0";
+$("sumTotal").textContent=s?money(s.price):"$0";
+$("sumDate").textContent=$("date").value||"Not selected";
+$("sumTime").textContent=chosenTime||"Not selected";
+}
+
+function renderSlots(){
+chosenTime="";
+$("selectedSlot").value="";
+$("slotGrid").innerHTML="";
+if(!$("date").value){
+$("slotCounter").textContent="Choose a date to see appointment times.";
+updateSummary();
+return;
+}
+$("slotCounter").textContent="Choose your preferred time. Availability will be confirmed by the studio.";
+TIMES.forEach(t=>{
+const b=document.createElement("button");
+b.type="button";
+b.className="slot";
+b.textContent=t;
+b.addEventListener("click",()=>{
+document.querySelectorAll(".slot").forEach(x=>x.classList.remove("selected"));
+b.classList.add("selected");
+chosenTime=t;
+$("selectedSlot").value=t;
+updateSummary();
+});
+$("slotGrid").appendChild(b);
+});
+updateSummary();
+}
+
+$("pricingType").addEventListener("change",()=>{
+const hourly=$("pricingType").value==="hourly";
+$("fixedFields").classList.toggle("hidden",hourly);
+$("hourlyFields").classList.toggle("hidden",!hourly);
+$("service").required=!hourly;
+$("duration").required=hourly;
+updateSummary();
+});
+
+$("service").addEventListener("change",updateSummary);
+$("duration").addEventListener("change",updateSummary);
+$("date").addEventListener("change",renderSlots);
+
+$("appointmentType").addEventListener("change",()=>{
+const home=$("appointmentType").value==="Home service";
+$("homeLocationFields").classList.toggle("hidden",!home);
+$("address").required=home;
+});
+
+$("design").addEventListener("change",()=>{
+const f=$("design").files[0];
+$("imagePreview").textContent=f?
+"Selected: "+f.name+". The image is not uploaded yet. Please send it separately to the studio." :"";
+});
+
+$("bookingForm").addEventListener("submit",async e=>{
+e.preventDefault();
+
+if(!chosenTime){
+alert("Please select an appointment time.");
+return;
+}
+
+const selected=selectedPricing();
+if(!selected){
+alert("Please select a service or session duration.");
+return;
+}
+
+const home=$("appointmentType").value==="Home service";
+if(home&&!$("address").value.trim()){
+alert("Please enter your home service location address.");
+return;
+}
+
+$("submitBtn").disabled=true;
+$("submitBtn").textContent="SUBMITTING...";
+
+const reference="RI"+Date.now().toString().slice(-8);
+
+const booking={
+reference:reference,
+customer_name:$("name").value.trim(),
+phone:$("phone").value.trim(),
+email:$("email").value.trim()||null,
+pricing_type:$("pricingType").value,
+service:selected.name,
+price:selected.price,
+appointment_date:$("date").value,
+appointment_time:chosenTime,
+body_placement:$("placement").value.trim()||null,
+appointment_type:$("appointmentType").value,
+location_address:home?$("address").value.trim():null,
+design_notes:$("notes").value.trim()||null,
+booking_status:"Pending",
+payment_status:"Unpaid"
+};
+
+try{
+const {error}=await db.from("bookings").insert([booking]);
+if(error) throw error;
+
+showStatus("status",
+"Booking submitted successfully! Your reference is "+reference+". The studio will review your request.");
+
+$("bookingForm").reset();
+$("homeLocationFields").classList.add("hidden");
+$("hourlyFields").classList.add("hidden");
+$("fixedFields").classList.remove("hidden");
+$("address").required=false;
+$("service").required=true;
+$("duration").required=false;
+$("imagePreview").textContent="";
+renderSlots();
+updateSummary();
+
+}catch(error){
+console.error(error);
+showStatus("status","Booking could not be submitted: "+error.message,true);
+}finally{
+$("submitBtn").disabled=false;
+$("submitBtn").textContent="SUBMIT BOOKING REQUEST";
+}
+});
+
+$("loginBtn").addEventListener("click",async()=>{
+const email=$("adminEmail").value.trim();
+const password=$("adminPassword").value;
+
+if(!email||!password){
+showStatus("adminStatus","Enter your administrator email and password.",true);
+return;
+}
+
+$("loginBtn").disabled=true;
+
+try{
+const {data,error}=await db.auth.signInWithPassword({email,password});
+if(error) throw error;
+
+$("loginArea").classList.add("hidden");
+$("adminArea").classList.remove("hidden");
+showStatus("adminStatus","Administrator logged in successfully.");
+await loadBookings();
+
+}catch(error){
+showStatus("adminStatus","Login failed: "+error.message,true);
+}finally{
+$("loginBtn").disabled=false;
+}
+});
+
+async function loadBookings(){
+const {data,error}=await db.from("bookings")
+.select("*")
+.order("created_at",{ascending:false});
+
+if(error){
+showStatus("adminStatus","Could not load bookings: "+error.message,true);
+return;
+}
+
+$("adminCount").textContent=data.length+" booking requests";
+
+$("adminBookings").innerHTML=data.length?data.map(b=>`
+<div class="panel admin-booking">
+<strong>${b.reference}</strong>
+<h3>${escapeHTML(b.customer_name)}</h3>
+<p>
+Phone: ${escapeHTML(b.phone)}<br>
+Email: ${escapeHTML(b.email||"Not supplied")}<br>
+Service: ${escapeHTML(b.service)}<br>
+Price: ${money(b.price)}<br>
+Date: ${escapeHTML(b.appointment_date)}<br>
+Time: ${escapeHTML(b.appointment_time)}<br>
+Placement: ${escapeHTML(b.body_placement||"Not supplied")}<br>
+Appointment: ${escapeHTML(b.appointment_type)}<br>
+Address: ${escapeHTML(b.location_address||"Studio appointment")}<br>
+Design notes: ${escapeHTML(b.design_notes||"None")}<br>
+Payment: ${escapeHTML(b.payment_status)}
+</p>
+<label>Booking status</label>
+<select class="admin-status" data-id="${b.id}">
+${["Pending","Approved","Confirmed","Rejected"].map(s=>
+`<option value="${s}" ${b.booking_status===s?"selected":""}>${s}</option>`
+).join("")}
+</select>
+<button class="btn full save-status" data-id="${b.id}" type="button">SAVE STATUS</button>
+</div>
+`).join(""):'<p class="muted">No bookings received yet.</p>';
+
+document.querySelectorAll(".save-status").forEach(button=>{
+button.addEventListener("click",async()=>{
+const id=button.dataset.id;
+const select=document.querySelector(`.admin-status[data-id="${id}"]`);
+const {error}=await db.from("bookings")
+.update({booking_status:select.value})
+.eq("id",id);
+
+if(error){
+showStatus("adminStatus","Status update failed: "+error.message,true);
+}else{
+showStatus("adminStatus","Booking status updated.");
+}
+});
+});
+}
+
+function escapeHTML(value){
+return String(value??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",
+'"':"&quot;","'":"&#39;"
+}[c]));
+}
+
+$("logoutBtn").addEventListener("click",async()=>{
+await db.auth.signOut();
+$("adminArea").classList.add("hidden");
+$("loginArea").classList.remove("hidden");
+$("adminPassword").value="";
+showStatus("adminStatus","You have logged out.");
+});
+
+$("date").min=new Date().toLocaleDateString("en-CA");
+$("year").textContent=new Date().getFullYear();
+
+renderServices();
+renderSlots();
+updateSummary();
+</script>
+</body>
+</html>
