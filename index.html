@@ -6,90 +6,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0c0c0d">
 <title>Royal Ink Tattoo Studio</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
---bg:#0c0c0d;
---panel:#171719;
---gold:#d7a94b;
---muted:#aaa;
---line:#303034;
---white:#f7f4ee;
+--bg:#0c0c0d;--panel:#171719;--gold:#d7a94b;
+--muted:#aaa;--line:#303034;--white:#f7f4ee;
 }
 *{box-sizing:border-box}
-body{
-margin:0;background:var(--bg);color:var(--white);
-font-family:Arial,sans-serif;line-height:1.5
-}
-header{
-position:sticky;top:0;z-index:5;
-background:#0c0c0dee;border-bottom:1px solid var(--line)
-}
-.nav{
-max-width:1100px;margin:auto;padding:16px 20px;
-display:flex;justify-content:space-between;align-items:center
-}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,sans-serif;line-height:1.5}
+header{position:sticky;top:0;z-index:5;background:#0c0c0dee;border-bottom:1px solid var(--line)}
+.nav{max-width:1100px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
 .logo{font-size:19px;font-weight:900;letter-spacing:2px}
 .logo span{color:var(--gold)}
 nav a{color:#ddd;text-decoration:none;margin-left:18px}
-.hero{
-min-height:430px;display:flex;align-items:center;
-background:linear-gradient(90deg,#080808f2,#080808a8),
-url('https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?auto=format&fit=crop&w=1800&q=85') center/cover
-}
+.hero{min-height:430px;display:flex;align-items:center;background:linear-gradient(90deg,#080808f2,#080808a8),url('https://images.unsplash.com/photo-1598371839696-5c5bb00bdc28?auto=format&fit=crop&w=1800&q=85') center/cover}
 .hero-inner{max-width:1100px;width:100%;margin:auto;padding:65px 22px}
 .eyebrow{color:var(--gold);font-weight:bold;letter-spacing:3px;font-size:12px}
 h1{font-size:clamp(38px,7vw,68px);line-height:1.05;max-width:700px}
 .hero p{max-width:550px;color:#ddd}
-.btn{
-display:inline-block;border:0;border-radius:6px;
-padding:13px 20px;background:var(--gold);
-color:#17120a;font-weight:800;text-decoration:none;cursor:pointer
-}
+.btn{display:inline-block;border:0;border-radius:6px;padding:13px 20px;background:var(--gold);color:#17120a;font-weight:800;text-decoration:none;cursor:pointer}
 .btn:disabled{opacity:.6;cursor:not-allowed}
 section{max-width:1100px;margin:auto;padding:55px 20px}
 .section-head{margin-bottom:25px}
 .section-head h2{font-size:30px;margin:0 0 6px}
 .section-head p,.muted{color:var(--muted)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.price-card,.panel{
-background:var(--panel);border:1px solid var(--line);
-border-radius:10px;padding:19px
-}
+.price-card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:19px}
 .price-card{display:flex;justify-content:space-between;gap:10px}
 .price-card strong{color:var(--gold)}
 .booking-layout{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:start}
 label{display:block;font-size:13px;font-weight:bold;margin:13px 0 6px}
-input,select,textarea{
-width:100%;padding:12px;border-radius:6px;
-border:1px solid #45454a;background:#101012;color:white;
-font:inherit
-}
+input,select,textarea{width:100%;padding:12px;border-radius:6px;border:1px solid #45454a;background:#101012;color:white;font:inherit}
 textarea{min-height:90px;resize:vertical}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .slot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.slot{
-padding:10px 5px;border:1px solid #555;border-radius:6px;
-background:#101012;color:white;cursor:pointer
-}
+.slot{padding:10px 5px;border:1px solid #555;border-radius:6px;background:#101012;color:white;cursor:pointer}
 .slot.selected{background:var(--gold);color:#111;font-weight:bold}
 .summary{position:sticky;top:85px}
-.summary-line{
-display:flex;justify-content:space-between;gap:12px;
-padding:9px 0;border-bottom:1px solid var(--line)
-}
+.summary-line{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
 .total{font-size:25px;color:var(--gold);font-weight:900}
 .note{font-size:12px;color:#aaa}
 .full{width:100%;margin-top:15px}
-.status{
-margin-top:12px;padding:12px;border-radius:7px;
-display:none;background:#1d3326;color:#b8f0c8
-}
+.status{margin-top:12px;padding:12px;border-radius:7px;display:none;background:#1d3326;color:#b8f0c8;overflow-wrap:anywhere}
 .error{background:#442020;color:#ffd0d0}
 footer{border-top:1px solid var(--line);padding:28px;text-align:center;color:#999}
-.admin-booking{display:block;margin-bottom:12px}
+.admin-booking{margin-bottom:12px}
 .hidden{display:none!important}
 @media(max-width:760px){
 nav{display:none}
@@ -129,10 +91,8 @@ nav{display:none}
 <h2>Tattoo price list</h2>
 <p>Prices are in US dollars. Final quotations may depend on design detail and session time.</p>
 </div>
-
 <h3>Fixed tattoo prices</h3>
 <div class="grid" id="priceList"></div>
-
 <h3 style="margin-top:30px">Hourly tattoo sessions</h3>
 <div class="grid" id="hourlyPriceList"></div>
 </section>
@@ -145,7 +105,6 @@ nav{display:none}
 </div>
 
 <div class="booking-layout">
-
 <form class="panel" id="bookingForm">
 
 <div class="row">
@@ -170,9 +129,7 @@ nav{display:none}
 
 <div id="fixedFields">
 <label for="service">Choose tattoo service *</label>
-<select id="service" required>
-<option value="">Select a service</option>
-</select>
+<select id="service" required><option value="">Select a service</option></select>
 </div>
 
 <div id="hourlyFields" class="hidden">
@@ -207,9 +164,7 @@ nav{display:none}
 <div id="homeLocationFields" class="hidden">
 <label for="address">Home service location address *</label>
 <textarea id="address" placeholder="Enter your full location address, estate, building or nearby landmark"></textarea>
-<div class="note">
-Home-service availability and any travel fee will be confirmed by the studio.
-</div>
+<div class="note">Home-service availability and any travel fee will be confirmed by the studio.</div>
 </div>
 
 <div class="note" id="slotCounter">Choose a date to see appointment times.</div>
@@ -226,19 +181,11 @@ Home-service availability and any travel fee will be confirmed by the studio.
 
 <div class="panel" style="padding:12px;margin-top:15px">
 <strong>Payment</strong>
-<div class="note">
-Payment instructions will be provided by the studio. After making payment, attach your payment confirmation screenshot when sending your WhatsApp booking request.
-</div>
+<div class="note">Payment instructions will be provided by the studio. Attach your payment confirmation screenshot when sending your WhatsApp booking request.</div>
 </div>
 
-<button class="btn full" id="submitBtn" type="submit">
-SUBMIT BOOKING VIA WHATSAPP
-</button>
-
-<div class="note">
-Your appointment is not confirmed until the studio verifies payment and approves your request.
-</div>
-
+<button class="btn full" id="submitBtn" type="submit">SUBMIT BOOKING VIA WHATSAPP</button>
+<div class="note">Your appointment is not confirmed until the studio verifies payment and approves your request.</div>
 <div class="status" id="status"></div>
 </form>
 
@@ -252,7 +199,6 @@ Your appointment is not confirmed until the studio verifies payment and approves
 <p class="note">Final quotations may change after the artist reviews your design.</p>
 <div class="total" id="sumTotal">$0</div>
 </aside>
-
 </div>
 </section>
 
@@ -264,9 +210,7 @@ Your appointment is not confirmed until the studio verifies payment and approves
 </div>
 <p>Phone / WhatsApp: <strong>+1 623-301-5587</strong></p>
 <p>Email: <strong>gristen86@gmail.com</strong></p>
-<a class="btn" href="https://wa.me/16233015587" target="_blank" rel="noopener">
-CHAT WITH US ON WHATSAPP
-</a>
+<a class="btn" href="https://wa.me/16233015587" target="_blank" rel="noopener">CHAT WITH US ON WHATSAPP</a>
 </section>
 
 <a href="https://wa.me/16233015587" target="_blank" rel="noopener"
@@ -278,7 +222,7 @@ WhatsApp us
 <div class="section-head">
 <div class="eyebrow">PRIVATE STUDIO MANAGEMENT</div>
 <h2>Administrator login</h2>
-<p>Access to historical bookings stored in your existing Supabase database. New WhatsApp bookings will arrive directly in WhatsApp, not in this dashboard.</p>
+<p>Manage saved booking records, payment status and appointment status.</p>
 </div>
 
 <div class="panel">
@@ -292,12 +236,11 @@ WhatsApp us
 
 <div id="adminArea" class="hidden">
 <div class="row">
-<strong id="adminCount">Booking requests</strong>
+<strong id="adminCount">Booking records</strong>
 <button class="btn" id="logoutBtn" type="button">LOG OUT</button>
 </div>
 <div id="adminBookings" style="margin-top:18px"></div>
 </div>
-
 <div class="status" id="adminStatus"></div>
 </div>
 </section>
@@ -307,6 +250,8 @@ WhatsApp us
 <script>
 const SUPABASE_URL="https://wnpyghzadyqtomjggfgfj.supabase.co";
 const SUPABASE_KEY="sb_publishable_TLfaseXPiMq-9pqOEe9EBw_s2XB7LDS";
+const OWNER_ID="31864842-ab27-414d-b153-8b98c8361c20";
+const WHATSAPP_NUMBER="16233015587";
 
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
@@ -334,19 +279,9 @@ const HOURLY=[
 ["7–8 hours",800]
 ];
 
-const TIMES=[
-"09:00 AM",
-"10:30 AM",
-"12:00 PM",
-"01:30 PM",
-"03:00 PM",
-"04:30 PM"
-];
-
-const WHATSAPP_NUMBER="16233015587";
+const TIMES=["09:00 AM","10:30 AM","12:00 PM","01:30 PM","03:00 PM","04:30 PM"];
 const $=id=>document.getElementById(id);
 const money=n=>"$"+Number(n).toLocaleString("en-US");
-
 let chosenTime="";
 
 function showStatus(id,message,error=false){
@@ -366,9 +301,7 @@ $("hourlyPriceList").innerHTML=HOURLY.map(s=>
 ).join("");
 
 $("service").innerHTML='<option value="">Select a service</option>'+
-SERVICES.map((s,i)=>
-`<option value="${i}">${s[0]} — ${money(s[1])}</option>`
-).join("");
+SERVICES.map((s,i)=>`<option value="${i}">${s[0]} — ${money(s[1])}</option>`).join("");
 }
 
 function selectedPricing(){
@@ -376,16 +309,12 @@ if($("pricingType").value==="hourly"){
 const item=HOURLY.find(x=>String(x[1])===$("duration").value);
 return item?{name:item[0],price:item[1]}:null;
 }
-
 const item=SERVICES[Number($("service").value)];
-
-return $("service").value!==""&&item?
-{name:item[0],price:item[1]}:null;
+return $("service").value!==""&&item?{name:item[0],price:item[1]}:null;
 }
 
 function updateSummary(){
 const s=selectedPricing();
-
 $("sumService").textContent=s?s.name:"Not selected";
 $("sumPrice").textContent=s?money(s.price):"$0";
 $("sumTotal").textContent=s?money(s.price):"$0";
@@ -404,41 +333,31 @@ updateSummary();
 return;
 }
 
-$("slotCounter").textContent=
-"Choose your preferred time. Availability will be confirmed by the studio.";
+$("slotCounter").textContent="Choose your preferred time. Availability will be confirmed by the studio.";
 
 TIMES.forEach(t=>{
 const b=document.createElement("button");
 b.type="button";
 b.className="slot";
 b.textContent=t;
-
 b.addEventListener("click",()=>{
-document.querySelectorAll(".slot").forEach(x=>
-x.classList.remove("selected")
-);
-
+document.querySelectorAll(".slot").forEach(x=>x.classList.remove("selected"));
 b.classList.add("selected");
 chosenTime=t;
 $("selectedSlot").value=t;
 updateSummary();
 });
-
 $("slotGrid").appendChild(b);
 });
-
 updateSummary();
 }
 
 $("pricingType").addEventListener("change",()=>{
 const hourly=$("pricingType").value==="hourly";
-
 $("fixedFields").classList.toggle("hidden",hourly);
 $("hourlyFields").classList.toggle("hidden",!hourly);
-
 $("service").required=!hourly;
 $("duration").required=hourly;
-
 updateSummary();
 });
 
@@ -448,99 +367,130 @@ $("date").addEventListener("change",renderSlots);
 
 $("appointmentType").addEventListener("change",()=>{
 const home=$("appointmentType").value==="Home service";
-
 $("homeLocationFields").classList.toggle("hidden",!home);
 $("address").required=home;
 });
 
 $("design").addEventListener("change",()=>{
 const f=$("design").files[0];
-
 $("imagePreview").textContent=f?
 "Selected: "+f.name+". Attach this image separately in WhatsApp after the message opens."
 :"";
 });
 
-$("bookingForm").addEventListener("submit",e=>{
+$("bookingForm").addEventListener("submit",async e=>{
 e.preventDefault();
 
-if(!$("bookingForm").reportValidity()){
-return;
-}
-
+if(!$("bookingForm").reportValidity())return;
 if(!chosenTime){
 alert("Please select an appointment time.");
 return;
 }
 
 const selected=selectedPricing();
-
 if(!selected){
 alert("Please select a service or session duration.");
 return;
 }
 
 const home=$("appointmentType").value==="Home service";
-
 if(home&&!$("address").value.trim()){
-alert("Please enter your home service location address.");
+alert("Please enter your home service location.");
 return;
 }
 
 const reference="RI"+Date.now().toString().slice(-8);
 
-const bookingMessage=`
+const booking={
+reference:reference,
+customer_name:$("name").value.trim(),
+phone:$("phone").value.trim(),
+email:$("email").value.trim()||null,
+pricing_type:$("pricingType").value,
+service:selected.name,
+price:selected.price,
+appointment_date:$("date").value,
+appointment_time:chosenTime,
+body_placement:$("placement").value.trim()||null,
+appointment_type:$("appointmentType").value,
+location_address:home?$("address").value.trim():null,
+design_notes:$("notes").value.trim()||null,
+booking_status:"Pending",
+payment_status:"Unpaid"
+};
+
+const message=`
 ROYAL INK TATTOO STUDIO
 NEW BOOKING REQUEST
 
-Booking Reference: ${reference}
+REFERENCE: ${reference}
 
 CUSTOMER DETAILS
-Name: ${$("name").value.trim()}
-Phone: ${$("phone").value.trim()}
-Email: ${$("email").value.trim()||"Not supplied"}
+Name: ${booking.customer_name}
+Phone: ${booking.phone}
+Email: ${booking.email||"Not supplied"}
 
 TATTOO DETAILS
-Pricing: ${$("pricingType").value}
-Service: ${selected.name}
-Price: ${money(selected.price)}
-Body Placement: ${$("placement").value.trim()||"Not specified"}
+Service: ${booking.service}
+Price: ${money(booking.price)}
+Body placement: ${booking.body_placement||"Not specified"}
 
-APPOINTMENT DETAILS
-Date: ${$("date").value}
-Time: ${chosenTime}
-Service Type: ${$("appointmentType").value}
-Location: ${home?$("address").value.trim():"At the studio"}
+APPOINTMENT
+Date: ${booking.appointment_date}
+Time: ${booking.appointment_time}
+Type: ${booking.appointment_type}
+Location: ${booking.location_address||"At the studio"}
 
 DESIGN DESCRIPTION
-${$("notes").value.trim()||"Not provided"}
+${booking.design_notes||"Not provided"}
 
-PAYMENT
-Payment status: Awaiting verification.
-Customer will attach payment proof separately.
+PAYMENT STATUS: UNPAID / AWAITING VERIFICATION
+Please attach payment proof and design reference separately.
 
-Please review this booking request and confirm availability.
+Please review and confirm availability.
 
 ROYAL INK TATTOO STUDIO
 `;
 
-const whatsappURL=
-"https://wa.me/"+WHATSAPP_NUMBER+
-"?text="+encodeURIComponent(bookingMessage);
+const whatsappURL="https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message);
 
-const opened=window.open(whatsappURL,"_blank");
+let whatsappWindow=null;
+try{
+whatsappWindow=window.open(whatsappURL,"_blank");
+}catch(err){}
 
-if(!opened){
-window.location.href=whatsappURL;
-}
+$("submitBtn").disabled=true;
+$("submitBtn").textContent="SAVING BOOKING...";
 
-showStatus(
-"status",
-"Your WhatsApp booking message is ready. Send it to Royal Ink and attach your payment screenshot and design image."
+try{
+const {error}=await db.from("bookings").insert([booking]);
+if(error)throw error;
+
+showStatus("status",
+"Booking "+reference+" saved to the database. Send the WhatsApp message and attach payment proof and design."
 );
 
-$("submitBtn").textContent="WHATSAPP BOOKING READY";
+}catch(error){
+console.error(error);
+showStatus("status",
+"Your booking reference is "+reference+". WhatsApp is ready, but database backup failed: "+error.message,
+true
+);
+}finally{
+if(!whatsappWindow){
+window.location.href=whatsappURL;
+}
+$("submitBtn").disabled=false;
+$("submitBtn").textContent="SUBMIT BOOKING VIA WHATSAPP";
+}
 });
+
+function escapeHTML(value){
+return String(value??"").replace(/[&<>"']/g,c=>({
+"&":"&amp;","<":"&lt;",">":"&gt;",
+'"':"&quot;","'":"&#39;"
+}[c]));
+}
 
 async function loadBookings(){
 const {data,error}=await db.from("bookings")
@@ -552,11 +502,11 @@ showStatus("adminStatus","Could not load bookings: "+error.message,true);
 return;
 }
 
-$("adminCount").textContent=data.length+" historical database bookings";
+$("adminCount").textContent=data.length+" booking records";
 
 $("adminBookings").innerHTML=data.length?data.map(b=>`
 <div class="panel admin-booking">
-<strong>${b.reference}</strong>
+<strong>Reference: ${escapeHTML(b.reference)}</strong>
 <h3>${escapeHTML(b.customer_name)}</h3>
 <p>
 Phone: ${escapeHTML(b.phone)}<br>
@@ -568,47 +518,53 @@ Time: ${escapeHTML(b.appointment_time)}<br>
 Placement: ${escapeHTML(b.body_placement||"Not supplied")}<br>
 Appointment: ${escapeHTML(b.appointment_type)}<br>
 Address: ${escapeHTML(b.location_address||"Studio appointment")}<br>
-Design notes: ${escapeHTML(b.design_notes||"None")}<br>
-Payment: ${escapeHTML(b.payment_status)}
+Design notes: ${escapeHTML(b.design_notes||"None")}
 </p>
-<label>Booking status</label>
-<select class="admin-status" data-id="${b.id}">
-${["Pending","Approved","Confirmed","Rejected"].map(s=>
+
+<label>Payment status</label>
+<select class="payment-status" data-id="${b.id}">
+${["Unpaid","Paid","Refunded"].map(s=>
+`<option value="${s}" ${b.payment_status===s?"selected":""}>${s}</option>`
+).join("")}
+</select>
+
+<label>Appointment status</label>
+<select class="booking-status" data-id="${b.id}">
+${["Pending","Confirmed","Completed","Cancelled"].map(s=>
 `<option value="${s}" ${b.booking_status===s?"selected":""}>${s}</option>`
 ).join("")}
 </select>
-<button class="btn full save-status" data-id="${b.id}" type="button">SAVE STATUS</button>
-</div>
-`).join():'<p class="muted">No historical database bookings found.</p>';
 
-document.querySelectorAll(".save-status").forEach(button=>{
+<button class="btn full save-booking" data-id="${b.id}" type="button">SAVE CHANGES</button>
+</div>
+`).join(""):'<p class="muted">No bookings received yet.</p>';
+
+document.querySelectorAll(".save-booking").forEach(button=>{
 button.addEventListener("click",async()=>{
 const id=button.dataset.id;
-const select=document.querySelector(
-`.admin-status[data-id="${id}"]`
-);
+const payment=document.querySelector(`.payment-status[data-id="${id}"]`);
+const status=document.querySelector(`.booking-status[data-id="${id}"]`);
+
+button.disabled=true;
+button.textContent="SAVING...";
 
 const {error}=await db.from("bookings")
-.update({booking_status:select.value})
+.update({
+payment_status:payment.value,
+booking_status:status.value
+})
 .eq("id",id);
 
-if(error){
-showStatus("adminStatus","Status update failed: "+error.message,true);
-}else{
-showStatus("adminStatus","Booking status updated.");
-}
-});
-});
-}
+button.disabled=false;
+button.textContent="SAVE CHANGES";
 
-function escapeHTML(value){
-return String(value??"").replace(/[&<>"']/g,c=>({
-"&":"&amp;",
-"<":"&lt;",
-">":"&gt;",
-'"':"&quot;",
-"'":"&#39;"
-}[c]));
+if(error){
+showStatus("adminStatus","Update failed: "+error.message,true);
+}else{
+showStatus("adminStatus","Booking and payment records updated successfully.");
+}
+});
+});
 }
 
 $("loginBtn").addEventListener("click",async()=>{
@@ -623,20 +579,16 @@ return;
 $("loginBtn").disabled=true;
 
 try{
-const {data,error}=await db.auth.signInWithPassword({
-email,password
-});
-
+const {data,error}=await db.auth.signInWithPassword({email,password});
 if(error)throw error;
 
-if(data.user.id!=="31864842-ab27-414d-b153-8b98c8361c20"){
+if(data.user.id!==OWNER_ID){
 await db.auth.signOut();
 throw new Error("This account is not authorized as the Royal Ink owner.");
 }
 
 $("loginArea").classList.add("hidden");
 $("adminArea").classList.remove("hidden");
-
 showStatus("adminStatus","Administrator logged in successfully.");
 await loadBookings();
 
@@ -649,11 +601,9 @@ $("loginBtn").disabled=false;
 
 $("logoutBtn").addEventListener("click",async()=>{
 await db.auth.signOut();
-
 $("adminArea").classList.add("hidden");
 $("loginArea").classList.remove("hidden");
 $("adminPassword").value="";
-
 showStatus("adminStatus","You have logged out.");
 });
 
